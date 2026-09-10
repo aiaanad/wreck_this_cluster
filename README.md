@@ -1,1 +1,124 @@
-# wreck_this_cluster
+# WRECK THIS CLUSTER
+
+
+![poster](/pictures/image.png)
+
+
+Интерактивный стенд на стыке Chaos Engineering и автоматического восстановления инфраструктуры. Проект позволяет наглядно проследить работу Kubernetes, Chaos Mesh и стека мониторинга (Prometheus + Grafana) в условиях контролируемых сбоев.
+
+## Концепция
+За основу взята идея популярного блокнота-антистресса «Уничтожь меня». Вместо привычного тестирования мы предлагаем «выплеснуть эмоции» и намеренно сломать инфраструктуру одной кнопкой, чтобы в реальном времени увидеть, как оркестратор возвращает систему в целевое состояние.
+
+- Kubernetes выступает в роли «мозга», который автоматически поддерживает описанное в манифестах состояние и поднимает упавшие компоненты.
+
+- Chaos Mesh скачивается одной командой через Helm и отвечает за инжекцию сбоев (pod kill, сетевые задержки, нагрузка на CPU).
+
+- Prometheus & Grafana визуализируют метрики проседания трафика и мгновенного самоисцеления сервиса.
+
+## Текущий прогресс (идея пришла вчера)
+
+- Разработано прототипное FastAPI-приложение (интерфейс с кнопками атак).
+
+- Настроен локальный мульти-нод кластер Minikube.
+
+- Подключен Chaos Mesh и протестированы базовые манифесты сбоев (PodChaos, NetworkChaos).
+
+## Быстрый старт
+
+Вот компактный пошаговый гайд для быстрого запуска всего стека.
+
+1. Поднимите кластер, выделив минимум по 4 ГБ RAM на ноду:
+
+```bash
+minikube start --nodes 2 --driver=docker --memory=4096 --cpus=2
+
+```
+
+Для проверки готовности выполните:
+
+```bash
+kubectl get nodes
+
+```
+
+
+2. Соберите Docker-образ сайта прямо внутри Minikube и примените манифесты:
+
+```bash
+# Сборка образа сразу на все ноды
+minikube image build -t chaos-app:v1 .
+
+# Применение манифестов (Deployment + Service)
+kubectl apply -f k8s-manifests.yaml
+
+```
+
+Для проверки выполнения используйте:
+
+```bash
+kubectl get pods -l app=chaos-app -o wide
+
+```
+
+
+3. Разверните Chaos Mesh в отдельном namespace:
+
+```bash
+helm repo add chaos-mesh https://charts.chaos-mesh.org
+helm repo update
+kubectl create ns chaos-mesh
+
+helm install chaos-mesh chaos-mesh/chaos-mesh \
+  --namespace=chaos-mesh \
+  --set chaosDaemon.runtime=docker \
+  --set chaosDaemon.socketPath=/var/run/docker.sock
+
+```
+
+Для проверки успешной установки выполните:
+
+```bash
+kubectl get pods -n chaos-mesh
+
+```
+
+
+4. Пробросьте порт для доступа к вашему FastAPI-приложению с локального ПК:
+
+```bash
+minikube service chaos-app-service
+
+```
+
+*Команда автоматически сгенерирует URL и откроет ваш сайт с кнопками атак в браузере по умолчанию.*
+
+
+5. Откройте два дополнительных терминала для запуска графических интерфейсов.
+
+**Стандартный Kubernetes Dashboard:**
+
+```bash
+minikube dashboard
+
+```
+
+**Chaos Mesh Dashboard:**
+
+```bash
+kubectl port-forward -n chaos-mesh svc/chaos-dashboard 2333:2333
+
+```
+
+*После выполнения откройте в браузере адрес `http://localhost:2333`.*
+
+## Планы по развитию
+- Доработка и стилизация UI/UX веб-интерфейса.
+
+- Подготовка IaC-скриптов (Terraform) для быстрого развертывания стенда в Yandex Cloud.
+
+- Настройка кастомной панелей в Grafana для наглядной демонстрации на конференциях.
+
+
+
+
+
