@@ -1,7 +1,7 @@
 # WRECK THIS CLUSTER
 
 
-![poster](/pictures/image.png)
+![poster](/readme_pics/image.png)
 
 
 Интерактивный стенд на стыке Chaos Engineering и автоматического восстановления инфраструктуры. Проект позволяет наглядно проследить работу Kubernetes, Chaos Mesh и стека мониторинга (Prometheus + Grafana) в условиях контролируемых сбоев.
@@ -21,28 +21,13 @@
 
 - Разработано прототипное FastAPI-приложение (интерфейс с кнопками атак).
 
-- Настроен локальный мульти-нод кластер Minikube.
-
 - Подключен Chaos Mesh и протестированы базовые манифесты сбоев (PodChaos, NetworkChaos).
 
 ## Быстрый старт
 
 Полный сценарий развёртывания с нуля, включая Terraform, Docker-образы, RBAC,
-Redis, victim-приложение, Ingress и Chaos Mesh, находится в
+Redis, victim-приложение, Ingress и Chaos Mesh, будет находится в
 [`infra/DEPLOY.md`](infra/DEPLOY.md).
-
-Для локального запуска выполните команды из tutorial:
-
-```bash
-minikube start --nodes 3 --driver=docker --memory=4096 --cpus=2
-minikube addons enable ingress
-minikube image build -t wreck-this-cluster-backend:latest ./backend
-minikube image build -t wreck-this-cluster-frontend:latest ./frontend
-```
-
-Далее следуйте шагам установки Chaos Mesh и применения манифестов в
-[`infra/DEPLOY.md`](infra/DEPLOY.md). UI, REST API и WebSocket работают через один
-Ingress host, поэтому отдельный `minikube service` для backend не требуется.
 
 ## Планы по развитию
 - Доработка и стилизация UI/UX веб-интерфейса.
