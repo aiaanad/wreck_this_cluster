@@ -1,0 +1,6 @@
+{
+  "name": "Wreck This Cluster (Dark Zine Edition)",
+  "description": "Интерактивный цифровой зин по хаос-инжинирингу в Kubernetes с эстетикой панк-коллажа, пиньятой, Приорой и рогаткой.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

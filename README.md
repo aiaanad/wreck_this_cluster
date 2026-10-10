@@ -27,91 +27,22 @@
 
 ## Быстрый старт
 
-Вот компактный пошаговый гайд для быстрого запуска всего стека.
+Полный сценарий развёртывания с нуля, включая Terraform, Docker-образы, RBAC,
+Redis, victim-приложение, Ingress и Chaos Mesh, находится в
+[`infra/DEPLOY.md`](infra/DEPLOY.md).
 
-1. Поднимите кластер, выделив минимум по 4 ГБ RAM на ноду:
-
-```bash
-minikube start --nodes 2 --driver=docker --memory=4096 --cpus=2
-
-```
-
-Для проверки готовности выполните:
+Для локального запуска выполните команды из tutorial:
 
 ```bash
-kubectl get nodes
-
+minikube start --nodes 3 --driver=docker --memory=4096 --cpus=2
+minikube addons enable ingress
+minikube image build -t wreck-this-cluster-backend:latest ./backend
+minikube image build -t wreck-this-cluster-frontend:latest ./frontend
 ```
 
-
-2. Соберите Docker-образ сайта прямо внутри Minikube и примените манифесты:
-
-```bash
-# Сборка образа сразу на все ноды
-minikube image build -t chaos-app:v1 .
-
-# Применение манифестов (Deployment + Service)
-kubectl apply -f k8s-manifests.yaml
-
-```
-
-Для проверки выполнения используйте:
-
-```bash
-kubectl get pods -l app=chaos-app -o wide
-
-```
-
-
-3. Разверните Chaos Mesh в отдельном namespace:
-
-```bash
-helm repo add chaos-mesh https://charts.chaos-mesh.org
-helm repo update
-kubectl create ns chaos-mesh
-
-helm install chaos-mesh chaos-mesh/chaos-mesh \
-  --namespace=chaos-mesh \
-  --set chaosDaemon.runtime=docker \
-  --set chaosDaemon.socketPath=/var/run/docker.sock
-
-```
-
-Для проверки успешной установки выполните:
-
-```bash
-kubectl get pods -n chaos-mesh
-
-```
-
-
-4. Пробросьте порт для доступа к вашему FastAPI-приложению с локального ПК:
-
-```bash
-minikube service chaos-app-service
-
-```
-
-*Команда автоматически сгенерирует URL и откроет ваш сайт с кнопками атак в браузере по умолчанию.*
-
-
-5. Откройте два дополнительных терминала для запуска графических интерфейсов.
-
-**Стандартный Kubernetes Dashboard:**
-
-```bash
-minikube dashboard
-
-```
-
-**Chaos Mesh Dashboard:**
-
-```bash
-kubectl port-forward -n chaos-mesh svc/chaos-dashboard 2333:2333
-
-```
-
-*После выполнения откройте в браузере адрес `http://localhost:2333`.*
+Далее следуйте шагам установки Chaos Mesh и применения манифестов в
+[`infra/DEPLOY.md`](infra/DEPLOY.md). UI, REST API и WebSocket работают через один
+Ingress host, поэтому отдельный `minikube service` для backend не требуется.
 
 ## Планы по развитию
 - Доработка и стилизация UI/UX веб-интерфейса.

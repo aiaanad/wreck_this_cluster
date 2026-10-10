@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .font-marker {
+    font-family: 'Permanent Marker', cursive, sans-serif;
+  }
+  .font-typewriter {
+    font-family: 'Special Elite', 'Courier Prime', monospace;
+  }
+  .font-courier {
+    font-family: 'Courier Prime', monospace;
+  }
+  .font-cursive {
+    font-family: 'Caveat', cursive;
+  }
+}
+
+/* Custom Zine aesthetic rules */
+html {
+  background-color: #0a0a0a;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: #0a0a0a;
+  color: #ffffff;
+  min-height: 100dvh;
+  margin: 0;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#root {
+  min-height: 100dvh;
+  min-width: 0;
+  width: 100%;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+p,
+span,
+a,
+button {
+  overflow-wrap: anywhere;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Lined notebook paper background */
+.lined-paper {
+  background-color: #fbfbf9;
+  background-image: linear-gradient(#e2e4e8 1px, transparent 1px);
+  background-size: 100% 28px;
+  box-shadow: 2px 3px 12px rgba(0, 0, 0, 0.6);
+}
+
+/* Kraft Yellow Masking Tape */
+.masking-tape {
+  background: rgba(235, 215, 135, 0.88);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  backdrop-filter: blur(0.5px);
+  border-left: 2px dashed rgba(200, 180, 100, 0.4);
+  border-right: 2px dashed rgba(200, 180, 100, 0.4);
+}
+
+/* Torn paper edge effect */
+.torn-edge {
+  clip-path: polygon(
+    0% 0%, 100% 0%,
+    99% 10%, 100% 20%, 98.5% 30%, 100% 40%, 99% 50%, 100% 60%, 98% 70%, 100% 80%, 98.5% 90%, 100% 100%,
+    0% 100%,
+    1.5% 90%, 0% 80%, 2% 70%, 0% 60%, 1% 50%, 0% 40%, 1.5% 30%, 0% 20%, 1% 10%
+  );
+}
+
+/* Paper perforation */
+.perforated-edge {
+  background-image: radial-gradient(circle at 10px 0, transparent 0, transparent 6px, #181818 7px);
+}
+
+/* Rubber ink stamp effect */
+.ink-stamp {
+  border: 3px solid #c81d25;
+  color: #c81d25;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  mask-image: radial-gradient(circle, black 70%, transparent 100%);
+}
+
+/* CRT / Xerox subtle scanline overlay */
+.xerox-grit {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+@keyframes batSwing {
+  0% { transform: rotate(0deg) scale(1); }
+  35% { transform: rotate(-35deg) scale(1.08) translate(-10px, -15px); }
+  60% { transform: rotate(42deg) scale(0.96) translate(-75px, 20px); }
+  80% { transform: rotate(15deg) scale(1); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+.animate-bat-swing {
+  animation: batSwing 0.42s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+  transform-origin: bottom right;
+}
+
+@keyframes podSway {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-14deg) scale(0.95); }
+  50% { transform: rotate(10deg) scale(1.03); }
+  75% { transform: rotate(-5deg) scale(0.98); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+.animate-pod-sway {
+  animation: podSway 0.7s ease-out forwards;
+  transform-origin: top center;
+}
+
+@keyframes carRev {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+.animate-car-idle {
+  animation: carRev 0.18s ease-in-out infinite;
+}

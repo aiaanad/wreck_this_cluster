@@ -1,0 +1,55 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: chaos-backend
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: chaos-backend
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: chaos-frontend
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: chaos-frontend
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: chaos-victim
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: chaos-app
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: chaos-testing
+spec:
+  hard:
+    requests.cpu: "2"
+    requests.memory: 2Gi
+    limits.cpu: "4"
+    limits.memory: 4Gi
+    pods: "20"
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: chaos-testing
+spec:
+  limits:
+    - type: Container
+      defaultRequest:
+        cpu: 25m
+        memory: 32Mi
+      default:
+        cpu: 500m
+        memory: 512Mi

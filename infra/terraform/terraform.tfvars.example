@@ -1,0 +1,10 @@
+# Copy to terraform.tfvars and fill in cloud-specific values.
+cloud_id                 = "your-cloud-id"
+folder_id                = "your-folder-id"
+zone                     = "ru-central1-a"
+cluster_name             = "wreck-this-cluster"
+service_account_id       = "your-service-account-id"
+node_service_account_id  = "your-node-service-account-id"
+node_count               = 3
+node_cores               = 2
+node_memory_gb           = 4

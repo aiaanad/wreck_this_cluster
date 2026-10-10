@@ -1,0 +1,9 @@
+# Baseline values for the Chaos Mesh Helm chart.
+# Adjust runtime/socketPath to match the container runtime of the cluster.
+chaosDaemon:
+  runtime: containerd
+  socketPath: /run/containerd/containerd.sock
+
+# Keep the dashboard internal; expose it with port-forward only when needed.
+chaosDashboard:
+  securityMode: true
