@@ -32,7 +32,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: frontend
-          image: registry.mwsapis.ru/project-danilovaajaana/wtc-registry/frontend
+          image: registry.mwsapis.ru/project-danilovaajaana/wtc-registry/frontend:v1
           # пулит только тогда когда образа нет в локальном кэше
           # соответсвенно лучше не использовать при пуше только уникальные теги
           imagePullPolicy: IfNotPresent
