@@ -4,9 +4,9 @@ metadata:
   name: chaos-ops
   namespace: chaos-testing
   annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: chaos-basic-auth
     nginx.ingress.kubernetes.io/auth-realm: "Chaos Ops"
@@ -14,10 +14,10 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "5"
 spec:
   ingressClassName: nginx
-  tls:
-    - hosts:
-        - app.188.93.54.160.nip.io
-      secretName: app-tls
+  # tls:
+  #   - hosts:
+  #       - app.188.93.54.160.nip.io
+  #     secretName: app-tls
   rules:
     - host: app.188.93.54.160.nip.io
       http:
