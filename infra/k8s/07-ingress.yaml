@@ -18,10 +18,10 @@ spec:
       cert-manager.io/cluster-issuer: letsencrypt-prod
   tls:
     - hosts:
-        - app.178.236.26.192.nip.io
+        - app.188.93.54.160.nip.io
       secretName: app-tls
   rules:
-    - host: app.178.236.26.192.nip.io
+    - host: app.188.93.54.160.nip.io
       http:
         paths:
           - path: /api/ops
