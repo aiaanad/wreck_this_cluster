@@ -6,6 +6,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     # ограничение по количеству запросов в секунду
     nginx.ingress.kubernetes.io/limit-rps: "2"
     nginx.ingress.kubernetes.io/limit-burst: "5"
@@ -17,9 +18,6 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
 spec:
   ingressClassName: nginx
-  metadata:
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
   tls:
     - hosts:
         - app.188.93.54.160.nip.io
