@@ -13,12 +13,15 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "5"
 spec:
   ingressClassName: nginx
+  metadata:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
   tls:
     - hosts:
-        - app.example.com
-      secretName: app-example-com-tls
+        - app.178.236.26.192.nip.io
+      secretName: app-tls
   rules:
-    - host: app.example.com
+    - host: app.178.236.26.192.nip.io
       http:
         paths:
           - path: /api/ops

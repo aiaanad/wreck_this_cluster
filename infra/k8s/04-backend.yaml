@@ -15,6 +15,7 @@ spec:
       labels:
         app: chaos-backend
     spec:
+      # предоставляем токен сервис аккаунта из rbac
       serviceAccountName: chaos-backend-sa
       automountServiceAccountToken: true
       terminationGracePeriodSeconds: 30
@@ -31,7 +32,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: backend
-          image: ${BACKEND_IMAGE}
+          image: registry.mwsapis.ru/project-danilovaajaana/wtc-registry/backend
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false

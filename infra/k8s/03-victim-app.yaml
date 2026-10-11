@@ -38,6 +38,8 @@ spec:
           ports:
             - name: http
               containerPort: 8080
+          # на уровне контейнера то есть у каждого nginx будут примонтированы вот эти папки, где он должен писать чтобы работать
+          # но выше было прописано, что файловая система только для чтения, поэтому такое решение проблемс
           volumeMounts:
             - name: nginx-cache
               mountPath: /var/cache/nginx
@@ -64,6 +66,8 @@ spec:
             limits:
               cpu: 250m
               memory: 128Mi
+      # предварительно создаем пустые директории на уровне ПОДА чтобы затем они монировались в контейнер
+      # жизненный цикл такой же как и у пода
       volumes:
         - name: nginx-cache
           emptyDir: {}
@@ -80,6 +84,7 @@ metadata:
 spec:
   selector:
     app: chaos-app
+  # перенаправление порта по имени порта
   ports:
     - name: http
       port: 80

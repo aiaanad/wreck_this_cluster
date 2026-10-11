@@ -1,21 +1,29 @@
+# версия апи для управленяи объектов связанных с приложениями
 apiVersion: apps/v1
+# желаемое состояние
 kind: Deployment
+# объект сам с именем redis и меткой redis, если захочется условно поменять количество экземпляров ищем по метке redis вот этот объект условно
 metadata:
   name: redis
   namespace: chaos-testing
   labels:
     app: redis
+# непосредственно описание желаемого состояния
 spec:
+  # шаблонных приложений с меткой redis должно быть одно, именно условно по типу - то есть под и тегу считается я думаю
   replicas: 1
   selector:
     matchLabels:
       app: redis
+  # непсоредствнно шаблон
   template:
     metadata:
       labels:
         app: redis
     spec:
+      # не разрешено автомонтирование в конфиги токена sa уровня кластера
       automountServiceAccountToken: false
+      # правила распредление инстансов 
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
@@ -23,10 +31,12 @@ spec:
           labelSelector:
             matchLabels:
               app: redis
+      # не от рута поднимается под
       securityContext:
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
+      # сам контейнер который кублет сам скачает из докрхаба так как не прописан реестр иной
       containers:
         - name: redis
           image: redis:7-alpine
@@ -44,8 +54,10 @@ spec:
             initialDelaySeconds: 3
             periodSeconds: 5
           livenessProbe:
-            tcpSocket:
-              port: redis
+            exec:
+              command:
+                - redis-cli
+                - ping
             initialDelaySeconds: 10
             periodSeconds: 10
           resources:
@@ -64,6 +76,8 @@ metadata:
 spec:
   selector:
     app: redis
+  # создается сервисом CLUSTER_IP - айпи всего калстера, и типо при обращении к нему
+  # по порту в port перенаправлет трафик на ДОСТУПНЫЙ под из Endpoints по порту из targetPort, если что в деплойменте прописываются имена портов тоже поэтому по ним тоже можно обращаться
   ports:
     - name: redis
       port: 6379

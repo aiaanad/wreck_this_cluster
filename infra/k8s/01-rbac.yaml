@@ -1,9 +1,15 @@
+# role-based accept control
+# то есть плодить экспрерименты можно только
+# подам у которых есть доступ к сервисному аккаунту chaos-backend-sa
+# то есть типо условно у них mws profile такой вот 
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: chaos-backend-sa
   namespace: chaos-testing
 ---
+# создается роль локальная которая может обращаться к апи хаос меша 
+# и соответсующие действия из вербс проделывать
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -14,6 +20,8 @@ rules:
     resources: ["podchaoses", "networkchaoses"]
     verbs: ["get", "list", "create", "delete"]
 ---
+# правила по которым только подам с доступом к сервисному аккаунту
+# присваивается роль кастомная с названием chaos-backend-controller
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:

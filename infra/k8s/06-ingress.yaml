@@ -6,6 +6,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # ограничение по количеству запросов в секунду
     nginx.ingress.kubernetes.io/limit-rps: "2"
     nginx.ingress.kubernetes.io/limit-burst: "5"
     nginx.ingress.kubernetes.io/limit-connections: "5"
@@ -16,12 +17,15 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
 spec:
   ingressClassName: nginx
+  metadata:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
   tls:
     - hosts:
-        - app.example.com
-      secretName: app-example-com-tls
+        - app.178.236.26.192.nip.io
+      secretName: app-tls
   rules:
-    - host: app.example.com
+    - host: app.178.236.26.192.nip.io
       http:
         paths:
           - path: /api/play
@@ -40,5 +44,5 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: frontend
+                name: chaos-frontend
                 port: { number: 80 }
