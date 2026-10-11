@@ -23,7 +23,7 @@ spec:
     spec:
       # не разрешено автомонтирование в конфиги токена sa уровня кластера
       automountServiceAccountToken: false
-      # правила распредление инстансов 
+      # правила распредление инстансов
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
@@ -34,6 +34,9 @@ spec:
       # не от рута поднимается под
       securityContext:
         runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 1000
+        fsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
       # сам контейнер который кублет сам скачает из докрхаба так как не прописан реестр иной
@@ -48,6 +51,9 @@ spec:
           ports:
             - name: redis
               containerPort: 6379
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
           readinessProbe:
             tcpSocket:
               port: redis
@@ -67,6 +73,9 @@ spec:
             limits:
               cpu: 250m
               memory: 128Mi
+      volumes:
+        - name: redis-data
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
