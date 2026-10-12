@@ -27,6 +27,7 @@ class ChaosService:
         "spec": {
             "action": "pod-kill",
             "mode": "one",
+            "duration": "30s",
             "selector": {
                 "namespaces": [self._namespace],
                 "labelSelectors": {"app": self._target_app},
