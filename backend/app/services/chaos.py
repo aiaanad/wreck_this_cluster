@@ -33,7 +33,7 @@ class ChaosService:
             },
         },
     }
-    self._apply_chaos("podchaoses", manifest)
+    self._apply_chaos("podchaos", manifest)
 
   def inject_pod_failure(self, duration: str = "20s") -> None:
     chaos_name = f"pinata-fail-{uuid.uuid4().hex[:6]}"
@@ -51,7 +51,7 @@ class ChaosService:
             },
         },
     }
-    self._apply_chaos("podchaoses", manifest)
+    self._apply_chaos("podchaos", manifest)
 
   def inject_network_delay(
       self, latency: str = "1500ms", duration: str = "20s"
@@ -76,7 +76,7 @@ class ChaosService:
             "duration": duration,
         },
     }
-    self._apply_chaos("networkchaoses", manifest)
+    self._apply_chaos("networkchaos", manifest)
 
   def _apply_chaos(self, plural: str, manifest: Dict[str, Any]) -> None:
     self._api.create_namespaced_custom_object(

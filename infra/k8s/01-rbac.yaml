@@ -17,7 +17,7 @@ metadata:
   namespace: chaos-testing
 rules:
   - apiGroups: ["chaos-mesh.org"]
-    resources: ["podchaoses", "networkchaoses"]
+    resources: ["podchaos", "networkchaos"]
     verbs: ["get", "list", "create", "delete"]
 ---
 # правила по которым только подам с доступом к сервисному аккаунту
